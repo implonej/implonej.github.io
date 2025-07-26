@@ -1,0 +1,24 @@
+name: Zola on GitHub Pages
+
+on:
+  push:
+    branches:
+      - master  # 主分支名称，根据实际情况修改
+
+jobs:
+  build:
+    name: Publish site
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout master  
+        uses: actions/checkout@v4
+      - name: Build and deploy
+        uses: shalzz/zola-deploy-action@v0.20.0
+        env:
+          # 确保分支名称与 GitHub Pages 设置中的一致
+          PAGES_BRANCH: gh-pages
+          # 构建命令，默认会生成 public 目录
+          BUILD_COMMAND: zola build
+          # 可选：如果你的项目在子目录中
+          BUILD_DIR: .
