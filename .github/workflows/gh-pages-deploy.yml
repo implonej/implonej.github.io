@@ -3,22 +3,32 @@ name: Zola on GitHub Pages
 on:
   push:
     branches:
-      - master  # 主分支名称，根据实际情况修改
+      - master  # 确认你的主分支名称（可能是 main 或 master）
+  pull_request:
+    branches:
+      - master  # 对 master 的 PR 触发预览构建
 
 jobs:
   build:
-    name: Publish site
+    name: Preview site (PR)
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.event_name == 'pull_request'
     steps:
-      - name: Checkout master  
-        uses: actions/checkout@v4
-      - name: Build and deploy
-        uses: shalzz/zola-deploy-action@v0.20.0
+      - uses: actions/checkout@v4
+      - uses: shalzz/zola-deploy-action@v0.20.0
         env:
-          # 确保分支名称与 GitHub Pages 设置中的一致
-          PAGES_BRANCH: gh-pages
-          # 构建命令，默认会生成 public 目录
-          BUILD_COMMAND: zola build
-          # 可选：如果你的项目在子目录中
           BUILD_DIR: .
+          BUILD_ONLY: true  # 仅构建，不部署
+          BUILD_FLAGS: --drafts  # 包含草稿文章用于预览
+
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shalzz/zola-deploy-action@v0.20.0
+        env:
+          PAGES_BRANCH: gh-pages
+          BUILD_DIR: .
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 必须添加认证令牌
