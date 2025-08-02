@@ -591,3 +591,46 @@ body.dark-mode .toc-sidebar {
   background: $darkMode-primary;
   border-right-color: darken($border, 30%);
 }
+
+
+
+// 针对移动端暗黑模式的终极空白修复
+@media (max-width: 900px) {
+  // 1. 覆盖基础样式的body默认margin，消除左右间距
+  body.dark-mode {
+    margin: 0 !important; // 彻底清除默认1.2em边距
+    padding: 1.2em 0.5em 0 !important; // 用padding替代margin，仅保留必要内边距
+    width: 100vw !important; // 强制占满屏幕宽度
+    overflow-x: hidden !important; // 禁止横向滚动
+    box-sizing: border-box !important; // 确保padding不撑开宽度
+  }
+
+  // 2. 强制主内容区填满屏幕，清除冗余间距
+  body.dark-mode .main-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 0.8rem !important; // 仅保留小幅度内边距，避免内容贴边
+    margin: 0 !important; // 清除可能的margin
+    box-sizing: border-box !important;
+  }
+
+  // 3. 修复目录容器在移动端暗黑模式的布局
+  body.dark-mode .toc-sidebar {
+    width: 100% !important;
+    padding: 1rem 0.8rem !important;
+    margin: 0 0 1.5rem 0 !important; // 仅保留底部间距
+    box-sizing: border-box !important;
+  }
+
+  // 4. 确保所有子元素不超出容器（解决图片、代码块等溢出问题）
+  body.dark-mode article.main-content * {
+    max-width: 100% !important; // 所有子元素强制不超出内容区
+    box-sizing: border-box !important;
+  }
+
+  // 5. 修复live2d插件可能导致的右侧空白（如果存在）
+  body.dark-mode #live2d-widget {
+    width: 120px !important; // 缩小移动端live2d宽度
+    right: -10px !important; // 适当右移避免挤压内容
+  }
+}
