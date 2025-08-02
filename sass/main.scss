@@ -519,6 +519,52 @@ body.dark-mode {
   }
 }
 
+// 目录折叠按钮样式
+.toc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.toc-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  color: inherit;
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+  }
+  
+  svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+  }
+}
+
+// 响应式调整
+@media (max-width: 900px) {
+  .toc-header {
+    margin-bottom: 0.5rem;
+  }
+}
+
+// 暗黑模式适配
+body.dark-mode {
+  .toc-toggle {
+    color: lighten($darkMode-toc, 20%);
+    
+    &:hover {
+      color: lighten($link, 20%);
+    }
+  }
+}
+
+
 
 
 

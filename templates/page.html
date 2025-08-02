@@ -19,7 +19,33 @@
 {%- if page.extra.toc and page.toc -%}
     <aside class="toc-sidebar"> <!-- 目录固定目录容器 -->
       <nav id="TableOfContents" class="toc-content">
-        <h3>目录</h3>
+        <div class="toc-header">
+          <h3>目录</h3>
+          <button class="toc-toggle" aria-label="折叠目录">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+        </div>
+        <div class="toc-items">
+          <ul>
+            {% for h1 in page.toc -%}
+            <li>
+              <a href="{{ h1.permalink | safe }}" class="toc-link">{{ h1.title }}</a>
+              {% if h1.children -%}
+              <ul>
+                {% for h2 in h1.children -%}
+                <li>
+                  <a href="{{ h2.permalink | safe }}" class="toc-link">{{ h2.title }}</a>
+                </li>
+                {%- endfor %}
+              </ul>
+              {%- endif %}
+            </li>
+            {%- endfor %}
+          </ul>
+        </div>
+        <!-- <h3>目录</h3>
         <ul>
           {% for h1 in page.toc -%}
           <li>
@@ -35,7 +61,7 @@
             {%- endif %}
           </li>
           {%- endfor %}
-        </ul>
+        </ul> -->
       </nav>
     </aside>
     {%- endif -%}
@@ -93,6 +119,33 @@
 
 {% block script -%}
   {{ super() }}
+  <!-- 添加目录折叠逻辑 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const tocToggle = document.querySelector('.toc-toggle');
+      const tocItems = document.querySelector('.toc-items');
+      
+      if (tocToggle && tocItems) {
+        // 初始化状态（默认展开）
+        let isExpanded = true;
+        
+        // 切换折叠/展开状态
+        tocToggle.addEventListener('click', function() {
+          isExpanded = !isExpanded;
+          
+          if (isExpanded) {
+            tocItems.style.display = 'block';
+            this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+            this.setAttribute('aria-label', '折叠目录');
+          } else {
+            tocItems.style.display = 'none';
+            this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 15 12 9 18 15"></polyline></svg>';
+            this.setAttribute('aria-label', '展开目录');
+          }
+        });
+      }
+    });
+  </script>
   {%- if page.extra.mathjax -%}
   <script type="text/javascript" defer
     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
