@@ -195,7 +195,7 @@ ul.pages-list {
   position: absolute;
   left: 50%; top: 25%;
   transform: translate(-50%, -50%);
-  background: #fff;
+  background: rgba(255, 255, 255, 0.85);//#fff; 搜索框背景
   border-radius: 12px;
   box-shadow: 0 4px 32px rgba(0,0,0,0.18);
   padding: 32px 32px 16px 32px;
@@ -599,7 +599,7 @@ body.dark-mode .toc-sidebar {
   // 1. 覆盖基础样式的body默认margin，消除左右间距
   body.dark-mode {
     margin: 0 !important; // 彻底清除默认1.2em边距
-    padding: 1.2em 0.5em 0 !important; // 用padding替代margin，仅保留必要内边距
+    padding: 1.2em; // 解决暗夜模式下元素整体左移 1.2em 0.5em 0 !important; // 用padding替代margin，仅保留必要内边距 
     width: 100vw !important; // 强制占满屏幕宽度
     overflow-x: hidden !important; // 禁止横向滚动
     box-sizing: border-box !important; // 确保padding不撑开宽度
