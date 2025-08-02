@@ -1,6 +1,7 @@
 +++
 title = "No use index"
 date = "2025-07-11T17:42:00"
+extra = { toc = true }  # 启用目录
 +++
 
 ## Free, no-nonsense, super-fast blogging

@@ -1,6 +1,7 @@
 +++
 title = "Welcome"
 date = "2024-12-03T17:42:00"
+extra = { toc = true } 
 +++
 ---
 __Advertisement :)__

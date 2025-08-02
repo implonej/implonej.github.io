@@ -15,14 +15,38 @@
 {% endblock %}
 
 {% block main -%}
-    <article>
+<div class="page-container"> <!-- 新增容器 -->
+{%- if page.extra.toc and page.toc -%}
+    <aside class="toc-sidebar"> <!-- 目录固定目录容器 -->
+      <nav id="TableOfContents" class="toc-content">
+        <h3>目录</h3>
+        <ul>
+          {% for h1 in page.toc -%}
+          <li>
+            <a href="{{ h1.permalink | safe }}" class="toc-link">{{ h1.title }}</a>
+            {% if h1.children -%}
+            <ul>
+              {% for h2 in h1.children -%}
+              <li>
+                <a href="{{ h2.permalink | safe }}" class="toc-link">{{ h2.title }}</a>
+              </li>
+              {%- endfor %}
+            </ul>
+            {%- endif %}
+          </li>
+          {%- endfor %}
+        </ul>
+      </nav>
+    </aside>
+    {%- endif -%}
+    <article class="main-content"> <!-- 主内容区 -->
       <header>
         <h1>{{ title }}</h1>
         <span>
           <br><time datetime="{{ page.date }}">{{ page.date | date(format="%b %d, %Y") }}</time>
         </span>
       </header>
-      {%- if page.extra.toc and page.toc -%}
+      <!-- {%- if page.extra.toc and page.toc -%}
       <details id=TableOfContentsWrapper>
         <summary>Table of Contents</summary>
         <nav id=TableOfContents>
@@ -44,7 +68,7 @@
           </ul>
         </nav>
       </details>
-      {%- endif -%}
+      {%- endif -%} -->
       {{ page.content | safe }}
       {%- if config.extra.giscus -%}
       <script src="https://giscus.app/client.js"
@@ -64,6 +88,7 @@
       </script>
       {%- endif -%}
     </article>
+</div>
 {%- endblock %}
 
 {% block script -%}

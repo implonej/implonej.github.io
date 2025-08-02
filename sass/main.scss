@@ -131,3 +131,463 @@ ul.pages-list {
     0% { transform: translate(-1px, 1.5px) rotate(-2deg); }
     100% { transform: translate(1px, -1.5px) rotate(2deg); }
   }
+
+
+
+  //search
+/* 可加到 main.css 或 base.html 的 <style> 标签中 */
+#search-input {
+  padding-left: 32px;
+  height: 28px;
+  border-radius: 14px;
+  border: 1px solid #ccc;
+  outline: none;
+  background: #fff;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%23888" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="17" y1="17" x2="22" y2="22"/></svg>');
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
+  background-position: 8px center;
+  transition: border 0.2s;
+}
+#search-input:focus {
+  border: 1.5px solid #0078d7;
+  background: #f8f8fa;
+}
+#search-results {
+  max-width: 720px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 999;
+  margin-top: 2px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+#search-results li {
+  padding: 6px 12px;
+  border-bottom: 1px solid #f2f2f2;
+  list-style: none;
+}
+#search-results li:last-child {
+  border-bottom: none;
+}
+
+#search-icon {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  vertical-align: middle;
+  background: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%23888" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="17" y1="17" x2="22" y2="22"/></svg>') no-repeat center center;
+  background-size: 22px 22px;
+}
+
+#search-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.35);
+}
+#search-modal.show {
+  display: block;
+}
+#search-modal-content {
+  position: absolute;
+  left: 50%; top: 25%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+  padding: 32px 32px 16px 32px;
+  min-width: 400px;
+  max-width: 90vw;
+  min-height: 80px;
+}
+#search-input {
+  width: 100%;
+  max-width: 600px;
+  font-size: 1.2em;
+  margin-bottom: 18px;
+}
+#search-results {
+  max-width: 600px;
+  max-height: 320px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+}
+
+
+// Dark Mode
+nav ul {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 图标间距，可调整 */
+}
+
+nav ul li {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0 6px;
+}
+
+#search-icon-btn,
+#theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+/* 只影响图标按钮之间的间距 */
+.nav-icons {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px; /* 图标间距更小 */
+  margin: 0 6px;
+}
+
+.nav-icons button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  cursor: pointer;
+}
+
+
+
+// 修改 Dark Mode 相关样式
+html.dark-mode {
+  min-height: 100vh; // 确保铺满视口高度
+  margin: 0;
+  padding: 0;
+  background-color: $darkMode-primary !important;
+}
+
+body.dark-mode {
+  background-color: $darkMode-primary !important;
+  min-height: 100vh; // 铺满视口高度
+  margin-top: 1.2em; // 保持原有顶部间距
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+}
+// 修复暗夜模式顶部白色间隙
+body.dark-mode {
+  min-height: 100vh; // 继承视口高度
+  margin: 0; // 移除默认margin（关键修复）
+  padding-top: 1.2em; // 用padding替代替margin-top，避免顶部间隙
+  background-color: $darkMode-primary !important;
+  box-sizing: border-box; // 确保padding不影响整体高度
+}
+
+// 确保主要容器无额外间距
+body.dark-mode > header,
+body.dark-mode > main {
+  margin-top: 0; // 移除可能的顶部margin
+  padding-top: 0;
+}
+
+// 修复可能的滚动条引起的间隙
+html.dark-mode,
+body.dark-mode {
+  overflow-x: hidden; // 防止水平滚动条导致的间隙
+}
+
+// 确保所有主要容器都继承深色背景
+body.dark-mode main,
+body.dark-mode article,
+body.dark-mode header,
+body.dark-mode footer {
+  background-color: $darkMode-primary !important;
+}
+
+// 锁定头像和标题的位置属性，不受暗夜模式影响
+// body.dark-mode .header__avatar {
+//   margin-right: 0px !important; // 保持原有右侧间距
+//   vertical-align: middle !important; // 保持垂直居中
+//   // 继承其他原有样式
+// }
+
+// body.dark-mode .header__verification,
+// body.dark-mode header h1,
+// body.dark-mode header > a {
+//   position: relative !important; // 保持相对定位
+//   margin: inherit !important; // 继承原有外边距
+//   padding: inherit !important; // 继承原有内边距
+// }
+
+
+
+
+#TableOfContents ul {
+  display: block !important; /* 取消可能的flex布局 */
+  padding-left: 1.5em; /* 保持适当缩进 */
+}
+
+#TableOfContents li {
+  display: block !important; /* 确保列表项纵向排列 */
+  margin: 0.5em 0; /* 增加列表项之间的垂直间距 */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////
+/// 
+/// 
+/// 
+/// 
+/// 
+/// 
+/// 
+/// 
+/// 
+/// 
+/// 
+/// 
+// 页面整体布局
+.page-container {
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+// 侧边栏目录样式
+.toc-sidebar {
+  width: 260px;
+  flex-shrink: 0; // 防止收缩
+  position: sticky;
+  top: 2rem;
+  height: calc(100vh - 4rem); // 视口高度减去上下边距
+  overflow-y: auto; // 内容过长时滚动
+  padding: 1rem 0;
+  
+  // 隐藏滚动条但保留功能
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 2px;
+  }
+  
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: rgba($stealthy, 0.3);
+  }
+}
+
+.toc-content {
+  h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    color: $stealthy;
+    padding-left: 0.5rem;
+    border-left: 3px solid $link;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  li {
+    margin: 0.4rem 0;
+    padding-left: 0.5rem;
+  }
+  
+  .toc-link {
+    color: $primary;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    display: block;
+    padding: 0.2rem 0;
+    
+    &:hover {
+      color: $link;
+      transform: translateX(3px);
+    }
+    
+    &:active {
+      color: $link-hover;
+    }
+  }
+  
+  // 二级目录样式
+  ul ul {
+    padding-left: 1rem;
+    margin-top: 0.3rem;
+    
+    .toc-link {
+      font-size: 0.9rem;
+      color: $stealthy;
+    }
+  }
+}
+
+// 主内容区样式
+.main-content {
+  flex: 1; // 占满剩余空间
+  max-width: calc(100% - 260px - 2rem); // 计算最大宽度
+}
+
+// 响应式适配
+@media (max-width: 900px) {
+  .page-container {
+    flex-direction: column;
+  }
+  
+  .toc-sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: rgba($invisible, 0.5);
+    border-radius: 6px;
+  }
+  
+  .main-content {
+    max-width: 100%;
+  }
+}
+
+// 暗黑模式适配
+body.dark-mode {
+  .toc-sidebar {
+    .toc-content {
+      h3 {
+        color: lighten($stealthy, 30%);
+        border-left-color: lighten($link, 20%);
+      }
+      
+      .toc-link {
+        color: lighten($darkMode-toc, 20%);
+        
+        &:hover {
+          color: lighten($link, 20%);
+        }
+      }
+      
+      ul ul .toc-link {
+        color: lighten($stealthy, 20%);
+      }
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .toc-sidebar {
+      background-color: rgba(darken($invisible, 50%), 0.3);
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+//ONEJ
+// 在main.scss中覆盖原有样式，实现目录左置且不占用文章空间
+.page-container {
+  display: flex;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+// 目录固定在最左侧，脱离文档流不占用主内容空间
+.toc-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 240px;
+  height: 100vh;
+  padding: 2rem 1rem;
+  background: $secondary;
+  border-right: 1px solid $border;
+  overflow-y: auto;
+  z-index: 10; // 确保在内容上方
+}
+
+// 主内容区向右偏移，避开目录区域
+.main-content {
+  flex: 1;
+  margin-left: 2px; // 与目录宽度一致
+  padding: 0 2rem;
+  max-width: calc(100% - 240px); // 计算剩余宽度
+}
+
+// 调整标题区域与内容的间距
+// body > header {
+//   margin-bottom: 1.5em !important; // 减小标题到底部距离
+//   padding-left: 240px; // 标题区域也向右偏移
+// }
+
+// 优化移动端显示
+@media (max-width: 900px) {
+  .toc-sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    margin-bottom: 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid $border;
+  }
+  
+  .main-content
+  {
+    margin-left: 0;
+    padding-left: 1rem;
+    max-width: 100%;
+  }
+}
+
+// 暗黑模式适配
+body.dark-mode .toc-sidebar {
+  background: $darkMode-primary;
+  border-right-color: darken($border, 30%);
+}
